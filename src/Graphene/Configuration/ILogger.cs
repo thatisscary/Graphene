@@ -7,10 +7,6 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Graphene.Configuration
 {
@@ -22,20 +18,23 @@ namespace Graphene.Configuration
         void Error(string message, Exception ex);
     }
 
-    internal class FakeLogger : ILogger
+    internal class SysDiagLogger : ILogger
     {
         public void Debug(string message)
         {
             System.Diagnostics.Debug.Write(message);
         }
+
         public void Info(string message)
         {
             System.Diagnostics.Debug.Write(message);
         }
+
         public void Warn(string message)
         {
             System.Diagnostics.Debug.Write(message);
         }
+
         public void Error(string message, Exception ex)
         {
             System.Diagnostics.Debug.Write(message);

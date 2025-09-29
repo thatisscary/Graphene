@@ -8,6 +8,8 @@
 
 using System;
 using System.Collections.Concurrent;
+using System.Collections.Generic;
+using Graphene.Tracking;
 
 namespace Graphene.Data
 {
@@ -17,20 +19,30 @@ namespace Graphene.Data
         public long _Total { get; set; }
         public long _Min { get; set; }
         public long _Max { get; set; }
-        public ConcurrentDictionary<string, long> NamedMetrics { get; set; } 
+        public ConcurrentDictionary<string, long> NamedMetrics { get; set; }
+        public List<Resolution> CoveredResolutions { get; set; }
+        public Resolution BucketResolution { get; set; }
     }
 
     public class TrackerData
     {
-        public TrackerData(string typeName)
+        public TrackerData(string typeName, Resolution minResolution)
         {
             TypeName = typeName;
             KeyFilter = string.Empty;
+            MinResolution = minResolution;
         }
 
-        public string _id { get {
-            return String.Concat(TypeName,TimeSlot.ToUniversalTime(),KeyFilter).Replace(" ","");
-        } }
+        [Obsolete("Temporary measure to accomodate older version of Graphene Client")]
+        public void OverrideMinResolution(Resolution newMinResolution)
+        {
+            MinResolution = newMinResolution;
+        }
+
+        public string _id
+        {
+            get { return String.Concat(TypeName, TimeSlot.ToUniversalTime(), KeyFilter).Replace(" ", ""); }
+        }
 
         public string TypeName { get; set; }
 
@@ -41,6 +53,8 @@ namespace Graphene.Data
         public string KeyFilter { get; set; }
 
         public string[] SearchFilters { get; set; }
+
+        public Resolution MinResolution { get; private set; }
 
         public Measure Measurement { get; set; }
     }
